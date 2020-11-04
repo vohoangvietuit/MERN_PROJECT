@@ -23,10 +23,10 @@ permission.
 * Implement upload image to server (ex: user avatar, product image)
 
 **Using technology:** 
+* ReactJS latest (Hook) + Redux (using Hook features)
+* NodeJS: for BE's API
 * MongoDB: with mongoose lib and mLad
 * ExpressJS
-* ReactJS + Redux
-* NodeJS: for BE's API
 
 **Tool:** Visual Studio Code
 
