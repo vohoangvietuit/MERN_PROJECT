@@ -9,6 +9,11 @@ class Navbar extends Component {
     e.preventDefault();
     this.props.logoutUser();
   };
+
+  addDefaultSrc = e => {
+    e.target.src = '/uploads/default-avatar.jpg';
+  };
+
   render() {
     const { isAuthenticated, user } = this.props.auth;
     const { carts } = this.props.cart;
@@ -74,6 +79,7 @@ class Navbar extends Component {
               title={
                 user.avatar ? 'My Avatar' : 'Go to profile to upload avatar'
               }
+              onError={this.addDefaultSrc}
             />
             {user.name}
           </a>

@@ -16,7 +16,7 @@
   height: auto;
 }
 
-.preview-upload-area canvas {
+.preview-upload-area img {
   display: block;
   margin: 0 auto;
   width: 250px;

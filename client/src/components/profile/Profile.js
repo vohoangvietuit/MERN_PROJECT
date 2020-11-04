@@ -74,6 +74,10 @@ class Profile extends Component {
       );
   };
 
+  addDefaultSrc = e => {
+    e.target.src = '/uploads/default-avatar.jpg';
+  };
+  
   render() {
     const { user } = this.props.auth;
     const { errors } = this.props;
@@ -88,6 +92,7 @@ class Profile extends Component {
                   <div className="col-6 col-md-4 my-2 mx-auto">
                     <div className="avatar-area">
                       <img
+                        onError={this.addDefaultSrc}
                         src={
                           user.avatar
                             ? user.avatar

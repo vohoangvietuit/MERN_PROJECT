@@ -6,6 +6,7 @@ import { uploadImage } from '../../actions/uploadAction';
 
 import Dropzone from 'react-dropzone';
 import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import {
   base64StringtoFile,
   extractImageFileExtensionFromBase64,
@@ -27,6 +28,7 @@ class UploadImage extends Component {
     this.imagePreviewCanvasRef = React.createRef();
 
     this.state = {
+      croppedImageUrl: null,
       file: null,
       imgSrc: null,
       imgSrcExt: null,
@@ -87,17 +89,81 @@ class UploadImage extends Component {
     }
   };
 
-  handleImageLoaded = image => {};
+  // If you setState the crop in here you should return false.
+  onImageLoaded = image => {
+    this.imageRef = image;
+  };
 
-  handleOnCropChange = crop => {
+  onCropComplete = crop => {
+    this.makeClientCrop(crop);
+  };
+
+  onCropChange = (crop, percentCrop) => {
+    // You could also use percentCrop:
+    // this.setState({ crop: percentCrop });
     this.setState({ crop });
   };
 
-  handleOnCropComplete = (crop, pixelCrop) => {
-    const canvasRef = this.imagePreviewCanvasRef.current;
-    const { imgSrc } = this.state;
-    image64toCanvasRef(canvasRef, imgSrc, pixelCrop);
-  };
+  async makeClientCrop(crop) {
+    if (this.imageRef && crop.width && crop.height) {
+      const { imgSrcExt } = this.state;
+      const myFilename = 'previewFile.' + imgSrcExt;
+      const croppedImageUrl = await this.getCroppedImg(
+        this.imageRef,
+        crop,
+        myFilename
+      );
+      this.setState({ croppedImageUrl });
+    }
+  }
+
+  getCroppedImg(image, crop, fileName) {
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (!blob) {
+          //reject(new Error('Canvas is empty'));
+          console.error('Canvas is empty');
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(this.fileUrl);
+        this.fileUrl = window.URL.createObjectURL(blob);
+        resolve(this.fileUrl);
+      }, 'image/jpeg');
+    });
+  }
+
+  // handleImageLoaded = image => {};
+
+  // handleOnCropChange = crop => {
+  //   this.setState({ crop });
+  // };
+
+  // handleOnCropComplete = (crop, pixelCrop) => {
+  //   const canvasRef = this.imagePreviewCanvasRef.current;
+  //   const { imgSrc } = this.state;
+  //   console.log('pixelCrop', pixelCrop);
+  //   image64toCanvasRef(canvasRef, imgSrc, pixelCrop);
+  // };
 
   handleGetImageResize = event => {
     event.preventDefault();
@@ -130,23 +196,23 @@ class UploadImage extends Component {
     }
   };
 
-  handleClearToDefault = event => {
-    if (event) event.preventDefault();
-    const canvas = this.imagePreviewCanvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // handleClearToDefault = event => {
+  //   if (event) event.preventDefault();
+  //   const canvas = this.imagePreviewCanvasRef.current;
+  //   const ctx = canvas.getContext('2d');
+  //   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    this.setState({
-      imgSrc: null,
-      imgSrcExt: null,
-      crop: {
-        x: 100,
-        y: 100,
-        width: 100,
-        height: 150
-      }
-    });
-  };
+  //   this.setState({
+  //     imgSrc: null,
+  //     imgSrcExt: null,
+  //     crop: {
+  //       x: 100,
+  //       y: 100,
+  //       width: 100,
+  //       height: 150
+  //     }
+  //   });
+  // };
 
   onUpload = e => {
     e.preventDefault();
@@ -159,7 +225,7 @@ class UploadImage extends Component {
   };
 
   render() {
-    const { imgSrc } = this.state;
+    const { imgSrc, croppedImageUrl } = this.state;
 
     return (
       <div className="area-upload">
@@ -175,14 +241,15 @@ class UploadImage extends Component {
                   minHeight={30}
                   maxWidth={80}
                   maxHeight={80}
-                  onImageLoaded={this.handleImageLoaded}
-                  onComplete={this.handleOnCropComplete}
-                  onChange={this.handleOnCropChange}
+                  onImageLoaded={this.onImageLoaded}
+                  onComplete={this.onCropComplete}
+                  onChange={this.onCropChange}
                 />
               </div>
               <div className="col-md-3">
                 <div className="preview-upload-area mx-auto">
-                  <canvas ref={this.imagePreviewCanvasRef} />
+                  {/* <canvas ref={this.imagePreviewCanvasRef} /> */}
+                  <img alt="Crop" style={{ maxWidth: '100%' }} src={croppedImageUrl} />
                   <p>Preview Avatar</p>
                   <button
                     className="btn btn-info btn-block"
@@ -204,17 +271,24 @@ class UploadImage extends Component {
           <div className="row">
             <div className="col-md-6 m-auto">
               <Dropzone
-                className="dropzone"
                 onDrop={this.onDrop}
                 accept={acceptedFileTypes}
                 multiple={false}
                 maxSize={imageMaxSize}
               >
-                <i className="fas fa-camera fa-2x mb-2" />
-                <p>
-                  Try dropping some files here, or click to select files to
-                  upload.
-                </p>
+                {({getRootProps, getInputProps}) => (
+                  <section>
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+
+                      <div className="dropzone">
+                        <i className="fas fa-camera fa-2x mb-2" />
+                        <p>Try dropping some files here, or click to select files to
+                    upload.</p>
+                      </div>
+                    </div>
+                  </section>
+                )}
               </Dropzone>
             </div>
           </div>
