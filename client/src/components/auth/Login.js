@@ -1,119 +1,79 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../actions/authAction';
 
 import TextFieldGroup from '../common/TextFieldGroup';
 
-import {
-  // toast,
-  ToastContainer
-} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      errors: {}
-    };
-  }
+function Login () {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  componentDidMount() {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/home');
+  const { auth, errors } = useSelector(state => state);
+  const dispatch = useDispatch();
+  let history = useHistory();
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      history.push('/home');
     }
-  }
+  }, [auth.isAuthenticated]);
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/home');
-    }
-
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-  }
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
 
     const userData = {
-      email: this.state.email,
-      password: this.state.password
+      email,
+      password
     };
 
-    this.props.loginUser(userData);
-    // .then(res =>
-    //   toast.success('Login success, loading...', {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     autoClose: 2000
-    //   })
-    // )
-    // .catch(err =>
-    //   toast.error('Error happen, try again!', {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     autoClose: 1500
-    //   })
-    // );
+    dispatch(loginUser(userData));
   };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-  render() {
-    const { errors } = this.state;
 
-    return (
-      <div className="login">
-        <div className="row">
-          <div className="col-md-6 m-auto">
-            <h1 className="display-4 text-center">Log In</h1>
-            <p className="lead text-center">Sign in to your account</p>
-            <form onSubmit={this.onSubmit} noValidate>
-              <TextFieldGroup
-                placeholder="Email Address"
-                name="email"
-                type="email"
-                value={this.state.email}
-                onChange={this.onChange}
-                error={errors.email}
-              />
+  return (
+    <div className="login">
+      <div className="row">
+        <div className="col-md-6 m-auto">
+          <h1 className="display-4 text-center">Log In</h1>
+          <p className="lead text-center">Sign in to your account</p>
+          <form onSubmit={onSubmit} noValidate>
+            <TextFieldGroup
+              placeholder="Email Address"
+              name="email"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              error={errors.email}
+            />
 
-              <TextFieldGroup
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={this.state.password}
-                onChange={this.onChange}
-                error={errors.password}
-              />
-              <input
-                type="submit"
-                value="Submit"
-                className="btn btn-info btn-block mt-4"
-              />
-            </form>
-          </div>
+            <TextFieldGroup
+              placeholder="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              error={errors.password}
+            />
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-info btn-block mt-4"
+            />
+          </form>
         </div>
-        <ToastContainer />
       </div>
-    );
-  }
+      <ToastContainer />
+    </div>
+  );
 }
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
+// Login.propTypes = {
+//   loginUser: PropTypes.func.isRequired,
+//   auth: PropTypes.object.isRequired,
+//   errors: PropTypes.object.isRequired
+// };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
-});
-
-export default connect(
-  mapStateToProps,
-  { loginUser }
-)(Login);
+export default Login;
