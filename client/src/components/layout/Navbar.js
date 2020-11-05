@@ -51,19 +51,6 @@ class Navbar extends Component {
             </div>
           </li>
         ) : null}
-        {/* <li className="nav-item">
-          <a href="" className="nav-link" onClick={this.onLogoutClick}>
-            {' '}
-            <img
-              className="rounded-circle"
-              src={user.avatar}
-              alt={user.name}
-              style={{ width: '25px', marginRight: '5px' }}
-              title="You must have a Gravatar connect to your email to display an image"
-            />
-            Logout
-          </a>
-        </li> */}
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"
@@ -128,7 +115,7 @@ class Navbar extends Component {
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            NashTech Store
+            Nash Store
           </Link>
           <button
             className="navbar-toggler"
@@ -140,17 +127,6 @@ class Navbar extends Component {
           </button>
 
           <div className="collapse navbar-collapse" id="mobile-nav">
-            {/* 
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">
-                    {' '}
-                    Landing
-                  </Link>
-                </li>
-              </ul> 
-            */}
-
             {isAuthenticated ? authLinks : guestLinks}
           </div>
         </div>

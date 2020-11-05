@@ -15,7 +15,7 @@ class Landing extends Component {
         <div className="dark-overlay landing-inner">
           <div className="text-center">
             <h2 className="display-3 mb-4">Nash Store</h2>
-            <p className="lead">Welcome to NashTech private store</p>
+            <p className="lead">Welcome to Nash private store</p>
             <p className="text-muted">
               To access store, you need to login/register your account
             </p>

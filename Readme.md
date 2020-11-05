@@ -1,4 +1,4 @@
-# Project Inventory Management - MERN Project
+# Project Nash - MERN Project 
 
 **Demo web:** https://nt-inventory-management.herokuapp.com/home
 
