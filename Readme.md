@@ -1,6 +1,6 @@
 # Project Nash - MERN Project 
 
-**Demo web:** https://nt-inventory-management.herokuapp.com/home
+**Demo web:** https://nash-management.herokuapp.com/home
 
 ****Account for demo:****
 * Admin email: admin@gmail.com - Pass: 123456
