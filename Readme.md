@@ -12,6 +12,7 @@ IM is a system to manage items. Each item has various props (name, price, note, 
 permission.
 
 **Feauture:**
+* Docker setup (for dev)
 * Implement shopping cart feature for normal user (using localStorage)
 * Implement checkout feature, item quantity should be calculated
 * Implement taxonomy feature and display as a drop down list in create / edit screen.
