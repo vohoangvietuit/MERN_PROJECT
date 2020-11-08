@@ -21,7 +21,7 @@ permission.
 * Implement authentication, authorization only admin user can perform CRUD
 * Implement search product autocomplete
 * Implement pagination for shopping page
-* Implement upload image to server (ex: user avatar, product image)
+* Implement upload image to server (ex: user avatar, product image) (Ongoing to fix bug)
 
 **Using technology:** 
 * ReactJS latest (Hook) + Redux (using Hook features)
