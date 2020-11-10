@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, auth, forAdmin, ...rest }) => (
           <Component {...props} />
         )
       ) : (
-        <Redirect to="/login" />
+        <Redirect to="/landing" />
       )
     }
   />

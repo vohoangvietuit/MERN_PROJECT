@@ -15,17 +15,6 @@ import {
 } from '../../actions/cartAction';
 
 class Cart extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     phone: '',
-  //     address: ''
-  //   };
-  // }
-
-  // onChange = e => {
-  //   this.setState({ [e.targe.name]: e.targe.value });
-  // };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors.phone || nextProps.errors.address) {
@@ -35,6 +24,7 @@ class Cart extends Component {
       });
     }
   }
+
   onOrder = () => {
     const { cart, auth } = this.props;
     const dataOrder = {
@@ -90,7 +80,6 @@ class Cart extends Component {
     this.props.plusItemCart(itemId);
   }
   render() {
-    // const { errors } = this.props;
     const { carts } = this.props.cart;
     const totalPrice = carts.reduce((accumulator, currentValue) => {
       return accumulator + currentValue.price * currentValue.quantity;
@@ -178,20 +167,6 @@ class Cart extends Component {
                       Note: Your need to enter your location and phone in your
                       profile to delivery
                     </small>
-                    {/*<TextFieldGroup
-                      name="phone"
-                      placeholder="Enter Phone"
-                      value={this.state.phone}
-                      onChange={this.onChange}
-                      error={errors.phone}
-                    />
-                    <TextFieldGroup
-                      name="address"
-                      placeholder="Enter Address"
-                      value={this.state.address}
-                      onChange={this.onChange}
-                      error={errors.address}
-                    />*/}
                   </div>
                   <button
                     className="btn btn-info btn-block mt-2"

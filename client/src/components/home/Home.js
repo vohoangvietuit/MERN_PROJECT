@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import Spinner from '../common/Spinner';
 import SelectListGroup from '../common/SelectListGroup';
 import Item from './Item';
@@ -229,14 +228,5 @@ function Home () {
       </div>
     );
 }
-
-// Home.propTypes = {
-//   getProductPaginateByCategory: PropTypes.func.isRequired,
-//   getCategories: PropTypes.func.isRequired,
-//   getProductsByCategory: PropTypes.func.isRequired,
-//   addToCart: PropTypes.func.isRequired,
-//   product: PropTypes.object.isRequired,
-//   category: PropTypes.object.isRequired
-// };
 
 export default Home;
