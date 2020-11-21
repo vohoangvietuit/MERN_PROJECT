@@ -1,5 +1,5 @@
 module.exports = {
   mongoURI:
-    'mongodb://vohoangvietuit:viet123@ds243502.mlab.com:43502/inventory_management',
+    'mongodb+srv://vohoangvietuit:viet123@inventory-management.vbi6y.mongodb.net/inventory_management?retryWrites=true&w=majority',
   secretOrKey: 'mysecretkey'
 };

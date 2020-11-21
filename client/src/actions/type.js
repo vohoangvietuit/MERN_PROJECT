@@ -4,6 +4,8 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const LOG_OUT = 'LOG_OUT';
 
+export const LOADING = 'LOADING';
+
 export const GET_CURRENT_USER = 'GET_CURRENT_USER';
 export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
 
