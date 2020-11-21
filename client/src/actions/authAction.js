@@ -3,7 +3,7 @@ import setAuthToken from '../utils/setAuthToken';
 // import jwt_decode from 'jwt-decode';
 import { clearCart } from './cartAction';
 
-import { GET_ERRORS, CLEAR_ERRORS, SET_CURRENT_USER, LOG_OUT } from './type';
+import { GET_ERRORS, CLEAR_ERRORS, SET_CURRENT_USER, LOG_OUT, LOADING } from './type';
 
 // Register
 export const registerUser = (userData, history) => dispatch => {
@@ -27,6 +27,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - Get user token
 export const loginUser = userData => dispatch => {
   return new Promise((resolve, reject) => {
+    dispatch(loading());
     axios
       .post('/api/users/login', userData)
       .then(res => {
@@ -173,3 +174,9 @@ export const clearErrors = () => {
     type: CLEAR_ERRORS
   };
 };
+
+export const loading = () => {
+  return {
+    type: LOADING
+  };
+}

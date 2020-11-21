@@ -6,6 +6,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import Spinner from '../common/Spinner';
 
 function Login () {
   const [email, setEmail] = useState('');
@@ -32,11 +33,13 @@ function Login () {
     dispatch(loginUser(userData));
   };
 
+  const spinner = auth.loading ? <Spinner /> : null;
 
   return (
     <div className="login">
       <div className="row">
         <div className="col-md-6 m-auto">
+          { spinner }
           <h1 className="display-4 text-center">Log In</h1>
           <p className="lead text-center">Sign in to your account</p>
           <form onSubmit={onSubmit} noValidate>
